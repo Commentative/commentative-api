@@ -1,6 +1,7 @@
 "use strict";
 const AWS = require("aws-sdk");
 const uuid = require("uuid");
+const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 module.exports.main = async event => {
   try {
@@ -42,5 +43,7 @@ module.exports.main = async event => {
       statusCode: 200,
       body: JSON.stringify(params.Item)
     };
-  } catch (err) {}
+  } catch (err) {
+    console.error(err);
+  }
 };

@@ -10,7 +10,7 @@ provider:
   region: eu-west-1
   profile: voting
   environment:
-    COMMENTATIVE_TABLE: "${self:service}-${opt:stage, self:provider.stage}"
+    COMMENTATIVE_TABLE: "${self:service}-${opt:stage, self:provider.stage}-db"
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -21,10 +21,6 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.COMMENTATIVE_TABLE}"
-    - Effect: "Allow"
-      Action:
-        - "ses:SendEmail"
-      Resource: "*"
 
 functions:
   commentative:
@@ -41,10 +37,10 @@ resources:
       DeletionPolicy: Retain
       Properties:
         AttributeDefinitions:
-          - AttributeName: email
+          - AttributeName: uuid
             AttributeType: S
         KeySchema:
-          - AttributeName: email
+          - AttributeName: uuid
             KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 1
