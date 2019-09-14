@@ -5,7 +5,7 @@ const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 module.exports.main = async event => {
   try {
-    const { commentData, articleBody } = JSON.parse(event.body);
+    const { commentData, articleBody, user } = JSON.parse(event.body);
 
     if (false) {
       // Validate data
@@ -18,14 +18,14 @@ module.exports.main = async event => {
       Item: {
         uuid: uuid(),
         articleBody,
-        comments: [
-          {
-            ...commentData,
-            createdAt: timestamp,
-            updatedAt: timestamp,
-            uuid: uuid()
-          }
-        ],
+        comments: commentData.map(({ body, reference }) => ({
+          body,
+          reference,
+          createdAt: timestamp,
+          updatedAt: timestamp,
+          uuid: uuid(),
+          user
+        })),
         createdAt: timestamp,
         updatedAt: timestamp
       }
