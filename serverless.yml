@@ -23,12 +23,18 @@ provider:
       Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.COMMENTATIVE_TABLE}"
 
 functions:
-  commentative:
-    handler: handler.main
+  commentativePost:
+    handler: action/post.main
     events:
       - http:
           path: commentative
-          method: any
+          method: post
+  commentativeGet:
+    handler: action/get.main
+    events:
+      - http:
+          path: commentative/{uuid}
+          method: get
 
 resources:
   Resources:
