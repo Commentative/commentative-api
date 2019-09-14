@@ -35,6 +35,12 @@ functions:
       - http:
           path: commentative/{uuid}
           method: get
+  commentativePut:
+    handler: action/put.main
+    events:
+      - http:
+          path: commentative/{uuid}
+          method: put
 
 resources:
   Resources:

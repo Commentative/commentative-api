@@ -6,11 +6,22 @@ const dynamoDb = new AWS.DynamoDB.DocumentClient();
 module.exports.main = async event => {
   try {
     const uuid = event.pathParameters.uuid;
+    const { commentData } = JSON.parse(event.body);
+
     const params = {
       TableName: process.env.COMMENTATIVE_TABLE,
       Key: {
-        uuid
-      }
+        email
+      },
+      ExpressionAttributeNames: {
+        "#comments": "comments"
+      },
+      ExpressionAttributeValues: {
+        ":comments": commentData
+      },
+      UpdateExpression:
+        "SET #emailConfirmed = :emailConfirmed, updatedAt = :updatedAt",
+      ReturnValues: "ALL_NEW"
     };
 
     const result = await dynamoDb.get(params).promise();
