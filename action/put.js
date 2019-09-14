@@ -8,6 +8,10 @@ module.exports.main = async event => {
     const uuid = event.pathParameters.uuid;
     const { commentData } = JSON.parse(event.body);
 
+    if (false) {
+      // validate data
+    }
+
     const params = {
       TableName: process.env.COMMENTATIVE_TABLE,
       Key: {
@@ -19,17 +23,15 @@ module.exports.main = async event => {
       ExpressionAttributeValues: {
         ":comments": commentData
       },
-      UpdateExpression:
-        "SET #emailConfirmed = :emailConfirmed, updatedAt = :updatedAt",
+      UpdateExpression: "SET #comments = list_append(#comments, :comments)",
       ReturnValues: "ALL_NEW"
     };
 
-    const result = await dynamoDb.get(params).promise();
-    const commentativeData = result.Item;
-
+    const result = await dynamoDb.put(params).promise();
+=
     return {
       statusCode: 200,
-      body: JSON.stringify(commentativeData)
+      body: JSON.stringify(result)
     };
   } catch (err) {
     console.error(err);
