@@ -18,7 +18,12 @@ module.exports.main = async event => {
         uuid: uuid(),
         articleBody,
         comments: [
-          { ...commentData, createdAt: timestamp, updatedAt: timestamp }
+          {
+            ...commentData,
+            createdAt: timestamp,
+            updatedAt: timestamp,
+            uuid: uuid()
+          }
         ],
         createdAt: timestamp,
         updatedAt: timestamp
