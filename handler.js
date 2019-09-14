@@ -4,10 +4,25 @@ const uuid = require("uuid");
 
 module.exports.main = async event => {
   try {
-    const { comments, articleBody } = JSON.parse(event.body);
+    const { commentData, articleBody } = JSON.parse(event.body);
 
     if (false) {
       // Validate data
     }
+
+    const timestamp = new Date().getTime();
+
+    const params = {
+      TableName: process.env.COMMENTATIVE_TABLE,
+      Item: {
+        uuid: uuid(),
+        articleBody,
+        comments: [
+          { ...commentData, createdAt: timestamp, updatedAt: timestamp }
+        ],
+        createdAt: timestamp,
+        updatedAt: timestamp
+      }
+    };
   } catch (err) {}
 };
