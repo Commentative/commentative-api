@@ -24,5 +24,18 @@ module.exports.main = async event => {
         updatedAt: timestamp
       }
     };
+
+    const result = await dynamoDb.put(params).promise();
+
+    if (false) {
+      // Check for error
+    }
+
+    console.log(result);
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify(params.Item)
+    };
   } catch (err) {}
 };
