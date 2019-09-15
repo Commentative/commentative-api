@@ -12,8 +12,10 @@ module.exports.main = async event => {
       // validate data
     }
 
-    console.log(uuid);
-    console.log(Array.isArray(commentData));
+    const commenDataWithUuid = commentData.map(comment => ({
+      ...commentData,
+      uuid: uuid()
+    }));
 
     const params = {
       TableName: process.env.COMMENTATIVE_TABLE,
@@ -24,7 +26,7 @@ module.exports.main = async event => {
         "#comments": "comments"
       },
       ExpressionAttributeValues: {
-        ":commentData": commentData
+        ":commentData": commenDataWithUuid
       },
       UpdateExpression: "SET #comments = list_append(#comments, :commentData)",
       ReturnValues: "ALL_NEW"
